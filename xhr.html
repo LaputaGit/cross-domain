@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>http</title>
+	<style>
+		#status {
+			width: 200px;
+			height: 30px;
+			border: 1px solid;
+		}
+	</style>
+</head>
+<body>
+	<button>点击发送一个http请求给nodejs服务器</button>
+	<div id="status"></div>
+
+	<script>
+		window.onload = () => {
+			let btn = document.querySelector('button');
+
+			let addURLParam = (url, name, value) => {
+				url += (url.indexOf('?') == -1 ? '?' : '&');
+				url += encodeURIComponent(name) + '=' + encodeURIComponent(value);
+
+				return url;
+			}
+
+			// 1- 基础版本 - 利用原生xhr对象实现http的请求
+			// btn.onclick = () => {
+			// 	const xhr = new XMLHttpRequest();
+			// 	xhr.open('get', 'http://127.0.0.1:8083', false);
+			// 	xhr.setRequestHeader('laputa', 'laputa');
+			// 	xhr.send(null);
+			// 	console.log(xhr);
+			// 	console.log(xhr.getResponseHeader('laputa'));
+			// 	console.log(xhr.getAllResponseHeaders());
+			// }
+
+			// 2- GET请求
+			btn.onclick = () => {
+				const xhr = new XMLHttpRequest();
+				xhr.open('get', addURLParam('http://127.0.0.1:8083', 'name', 'ht'), false);
+				xhr.send(null);
+				console.log(xhr);
+				console.log(xhr.getAllResponseHeaders());
+			}
+
+			// 3- POST请求 - 需对数据进行特殊处理
+			// 注意，没有实现成功！
+			// btn.onclick = () => {
+			// 	const xhr = new XMLHttpRequest();
+			// 	xhr.open('post', 'http://127.0.0.1:8083', false);
+			// 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			// 	var form = {
+			// 		"name": "postObj"
+			// 	}
+			// 	xhr.send(JSON.stringify(form));
+			// 	console.log(xhr);
+			// 	console.log(xhr.getAllResponseHeaders());
+			// }
+
+			// 超时设定
+			// btn.onclick = () => {
+			// 	const xhr = new XMLHttpRequest();
+			// 	xhr.open('get', addURLParam('http://127.0.0.1:8083', 'name', 'ht'), true);
+			// 	xhr.timeout = 1000;	// 将超时设置为1s钟，针对IE8+
+			// 	xhr.ontimeout = () => {
+			// 		alert('请求超时！')
+			// 	}
+			// 	xhr.send(null);
+			// 	console.log(xhr);
+			// 	console.log(xhr.getAllResponseHeaders());
+			// }
+
+			// 进度事件
+			// btn.onclick = () => {
+			// 	const xhr = new XMLHttpRequest();
+			// 	xhr.onload = () => {
+			// 		if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
+			// 			alert(xhr.responseText);
+			// 		} else {
+			// 			alert('request was wrong: ' + xhr.status)
+			// 		}
+			// 	}
+			// 	xhr.open('get', addURLParam('http://127.0.0.1:8083', 'name', 'ht'), false);
+			// 	// xhr.onloadstart = () => {alert('loadstart')};
+			// 	// xhr.onload = () => {alert('load')};
+			// 	// xhr.onloadend = () => {alert('loadend')};
+			// 	xhr.send(null);
+			// 	console.log(xhr);
+			// 	console.log(xhr.getAllResponseHeaders());
+			// }
+
+			// 进度事件之 - progress事件
+			// btn.onclick = () => {
+			// 	const xhr = new XMLHttpRequest();
+			// 	xhr.onprogress = (event) => {
+			// 		var divStatus = document.getElementById("status");
+			// 		/**
+			// 		 * 进度可用
+			// 		 * @param  {[Boolean]} event.lengthComputable [进度可用]
+			// 		 * @return {[type]}                        [description]
+			// 		 */
+			// 		if (event.lengthComputable) {
+			// 			console.log(event)
+			// 			divStatus.innerHTML = 'received ' + event.position + 'of' +  event.totalsize + 'bytes'
+			// 		}
+			// 	}
+			// 	xhr.open('get', 'http://127.0.0.1:8083', true);
+			// 	// xhr.onloadstart = () => {alert('loadstart')};
+			// 	// xhr.onload = () => {alert('load')};
+			// 	// xhr.onloadend = () => {alert('loadend')};
+			// 	xhr.send(null);
+			// }
+		}
+
+
+	</script>
+</body>
+</html>
